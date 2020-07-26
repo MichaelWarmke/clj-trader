@@ -1,31 +1,27 @@
 (ns clj-trader.exchange
-  (:import (user Exchange)
-           (clojure.lang PersistentQueue)))
+  (:import
+           (clojure.lang PersistentQueue)
+           (java.util Date)
+           (java.math BigInteger)))
 
 (defrecord MockExchange [symbolInformation]
   Exchange
   (defn getLatestCandle [symbol timeInterval]
-    (let [q (agent (deque ()))]
+    (let [q []]
       (produceCandles q symbol timeInterval)
       q)))
 
 
-(defn produceCandles [que])
+(defn makeCandle [symbol]
+  ({
+    "symbol" symbol
+    "open"     (BigInteger. 10),
+    "close"    (BigInteger. 15),
+    "openTime" (Date. 2020 05 12 10 30),
+    "closeTime" (Date. 2020 05 12 10 35)
+    }))
 
-
-(defn queue
-  ([] (PersistentQueue/EMPTY))
-  ([coll]
-   (reduce conj PersistentQueue/EMPTY coll)))
-
-(def que
-   (atom (queue)))
-
-(print (swap-vals! que pop))
-
-(Thread/sleep 500)
-
-(swap-vals! conj que "hello")
+(makeCandle "TLS")
 
 
 

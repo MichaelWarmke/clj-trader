@@ -8,9 +8,8 @@
   "New Candle")
 
 (defn produceCandles []
-  (doseq
     (take 10
-         (repeat callCandleApi))))
+         (repeat callCandleApi)))
 
 (def que
   (seque (produceCandles)))
