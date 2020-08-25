@@ -16,7 +16,8 @@
     ["/items"
      ["" :items]
      ["/:item-id" :item]]
-    ["/about" :about]]))
+    ["/about" :about]
+    ["/market-sum" :market-sum]]))
 
 (defn path-for [route & [params]]
   (if params
@@ -32,7 +33,8 @@
      [:h1 "Welcome to clj-trader"]
      [:ul
       [:li [:a {:href (path-for :items)} "Items of clj-trader"]]
-      [:li [:a {:href "/broken/link"} "Broken link"]]]]))
+      [:li [:a {:href "/broken/link"} "Broken link"]]
+      [:li [:a {:href (path-for :market-sum)} "Market Summary"]]]]))
 
 
 
@@ -59,6 +61,19 @@
   (fn [] [:span.main
           [:h1 "About clj-trader"]]))
 
+(defn market-sum-page [data]
+  (fn [] [:span.main
+          [:h1 "Market Summary"]
+          [:div.chart-container
+            [:h4.chart-column "timestamp"]
+            [:h4.chart-column "high"]
+            [:h4.chart-column "low"]
+            ]]))
+
+(defn format-column [data]
+  [:div.chart-column
+   [:h4 (:header data)
+    ]])
 
 ;; -------------------------
 ;; Translate routes -> page components
@@ -68,7 +83,8 @@
     :index #'home-page
     :about #'about-page
     :items #'items-page
-    :item #'item-page))
+    :item #'item-page
+    :market-sum #'market-sum-page))
 
 
 ;; -------------------------
@@ -79,7 +95,8 @@
     (let [page (:current-page (session/get :route))]
       [:div
        [:header
-        [:p [:a {:href (path-for :index)} "Home"] " | "
+        [:p
+         [:a {:href (path-for :index)} "Home"] " | "
          [:a {:href (path-for :about)} "About clj-trader"]]]
        [page]
        [:footer

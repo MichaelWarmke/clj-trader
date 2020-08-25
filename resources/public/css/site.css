@@ -29,6 +29,24 @@ a {
   color: #09f;
 }
 
+td {
+    padding-right: 10px
+}
+
+footer {
+
+}
+
+.chart-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.chart-column {
+    padding-right: 10px;
+}
+
+
 a:hover {
   text-decoration: underline;
 }
