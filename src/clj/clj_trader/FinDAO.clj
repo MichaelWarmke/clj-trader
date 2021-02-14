@@ -1,11 +1,10 @@
-(ns clj-trader.FInDAO
-  (:require [cheshire.core :as cc]))
+(ns clj-trader.FinDAO
+  (:require [cheshire.core :as cc]
+            [clj-trader.util :as util]))
 
 (def files
-  {:charts "C:\\Users\\Mike-AMD\\IdeaProjects\\clj-trader\\resources\\examples\\Chart.txt"
-   :market-sum "C:\\Users\\Mike-AMD\\IdeaProjects\\clj-trader\\resources\\examples\\MarketSum.txt"})
-
-
+  {:charts     (str util/project-dir "\\resources\\examples\\Chart.txt")
+   :market-sum (str util/project-dir "\\resources\\examples\\MarketSum.txt")})
 
 (defn format-chart [json-list & get-ins]
   (let [ json (first json-list)
@@ -36,3 +35,8 @@
 (format-chart simple-data [:h] [:l])
 
 (conj (map last [[:h] [:l]]))
+
+(defn getRecentInstrumentSummary [count]
+  (map (fn [%] {:timestamp % :high (+ 500 %) :low (+ 200 %)})
+        (range count)))
+

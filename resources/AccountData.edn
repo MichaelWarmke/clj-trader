@@ -1,0 +1,13 @@
+{
+ :name "Michael Warmke You Invest"
+ :accountType "Investment"
+ :accountNumber 1234
+ :positions (
+              {
+               :symbol "SPY"
+               :type "ETF"
+               :quantity 1
+               :price 400.00
+               }
+              )
+ }

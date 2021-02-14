@@ -1,11 +1,12 @@
 (ns clj-trader.core
   (:require
-   [reagent.core :as reagent :refer [atom]]
-   [reagent.dom :as rdom]
-   [reagent.session :as session]
-   [reitit.frontend :as reitit]
-   [clerk.core :as clerk]
-   [accountant.core :as accountant]))
+    [reagent.core :as reagent :refer [atom]]
+    [reagent.dom :as rdom]
+    [reagent.session :as session]
+    [reitit.frontend :as reitit]
+    [clerk.core :as clerk]
+    [accountant.core :as accountant]
+    [cljs-http.client :as client]))
 
 ;; -------------------------
 ;; Routes
@@ -17,7 +18,9 @@
      ["" :items]
      ["/:item-id" :item]]
     ["/about" :about]
-    ["/market-sum" :market-sum]]))
+    ["/market-sum"
+     ["" :market-sum]
+     ["/:count" :market-sum]]]))
 
 (defn path-for [route & [params]]
   (if params
@@ -61,19 +64,20 @@
   (fn [] [:span.main
           [:h1 "About clj-trader"]]))
 
-(defn market-sum-page [data]
+(defn market-sum-page []
   (fn [] [:span.main
           [:h1 "Market Summary"]
           [:div.chart-container
-            [:h4.chart-column "timestamp"]
-            [:h4.chart-column "high"]
-            [:h4.chart-column "low"]
+           [:div [:h4.chart-column "timestamp"] [:h4.chart-column "high"] [:h4.chart-column "low"]]
+           (map (fn [instrument]
+                  [:div [:p (:timestamp instrument)] [:p (:high instrument)] [:p (:low instrument)]])
+                (client/get (path-for :instrument-sum {:count 50})))
             ]]))
 
-(defn format-column [data]
-  [:div.chart-column
-   [:h4 (:header data)
-    ]])
+(defn account-sum-page []
+  (fn [] [:span.main
+          [:h1 "Account Summary"]
+          []]))
 
 ;; -------------------------
 ;; Translate routes -> page components

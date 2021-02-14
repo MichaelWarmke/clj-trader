@@ -1,7 +1,10 @@
 (ns clj-trader.api.yahoo
   (:require [clj-http.client :as client]
-            [cheshire.core :as cc]))
+            [cheshire.core :as cc]
+            [clojure.string :as str]
+            [clj-trader.util :as util]))
 
+;https://rapidapi.com/apidojo/api/yahoo-finance1
 (def rapid-yahoo
   {
    :summary "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-summary?region=US&lang=en"
@@ -85,11 +88,11 @@
         marketSumResult)
 
 
-(rapid-get (:charts rapid-yahoo))
-(rapid-get (:summary rapid-yahoo))
+;(rapid-get (:charts rapid-yahoo))
+;(rapid-get (:summary rapid-yahoo))
 
-(spit "C:\\Users\\Mike-AMD\\IdeaProjects\\clj-trader\\resources\\examples\\MarketSum.txt"
+(spit (str/join (list util/project-dir "\\resources\\examples\\MarketSum.txt"))
       (cc/generate-string marketSumResult {:pretty true}))
 
-(spit "C:\\Users\\Mike-AMD\\IdeaProjects\\clj-trader\\resources\\examples\\Chart.txt"
+(spit (str/join (list util/project-dir "\\resources\\examples\\Chart.txt"))
       (cc/generate-string charts {:pretty true}))
